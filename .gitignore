@@ -1,0 +1,27 @@
+# ==========================================
+# 1. ARCHIVOS GENERADOS AL COMPILAR C/C++
+# ==========================================
+*.o
+*.obj
+*.exe
+*.out
+*.app
+
+# Ejecutables sin extensión generados por el Makefile en Linux/WSL/Mac
+test_karatsuba
+benchmark_karatsuba
+
+# ==========================================
+# 2. CONFIGURACIONES DE ENTORNO LOCAL
+# ==========================================
+# Ignorar configuraciones personales de Visual Studio Code
+.vscode/
+
+# Archivos basura generados por macOS (si algún compañero usa Mac)
+.DS_Store
+
+# ==========================================
+# NOTA SOBRE ENTREGABLES (NO IGNORAR)
+# ==========================================
+# - El 'Makefile' DEBE subirse, son las instrucciones de compilación.
+# - La carpeta 'results/' (tiempos.csv, graficar.py) DEBE subirse como evidencia de experimentación.
