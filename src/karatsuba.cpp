@@ -3,7 +3,7 @@
 
 // Umbral para usar el método clásico. 
 // Para vectores muy pequeños, la recursión añade sobrecarga innecesaria.
-const int THRESHOLD = 1; 
+const int THRESHOLD = 64; 
 
 // Función recursiva interna sin la sobrecarga del padding en cada llamada
 Numero karatsubaRecursivo(const Numero& A, const Numero& B) {
