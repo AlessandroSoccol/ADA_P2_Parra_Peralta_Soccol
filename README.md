@@ -81,7 +81,7 @@ Karatsuba puede ser más lento para entradas pequeñas a pesar de su mejor compl
 
 Las mediciones dependen del procesador, compilador, opciones de optimización y carga del sistema. La semilla fija reproduce la secuencia pseudoaleatoria, pero no garantiza tiempos idénticos entre ejecuciones. Por ello, interpreta las gráficas como evidencia experimental y no como una prueba formal de complejidad. La curva en escala logarítmica facilita comparar tendencias, mientras que los tiempos directos muestran la diferencia práctica y el cruce.
 
-## Requisitos Previos
+## Requisitos Previos para la ejecucion
 *   Compilador **g++** con soporte para estándar C++17 (MinGW-w64 en Windows, o GCC en Linux/macOS).
 *   **Make** (Recomendado para entornos Linux/WSL).
 *   **Python 3** (Solo si se desean regenerar las gráficas).

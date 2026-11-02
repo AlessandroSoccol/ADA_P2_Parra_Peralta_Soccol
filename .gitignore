@@ -15,7 +15,7 @@ benchmark_karatsuba
 # 2. CONFIGURACIONES DE ENTORNO LOCAL
 # ==========================================
 # Ignorar configuraciones personales de Visual Studio Code
-.vscode/
+.vscode
 
 # Archivos basura generados por macOS (si algún compañero usa Mac)
 .DS_Store
