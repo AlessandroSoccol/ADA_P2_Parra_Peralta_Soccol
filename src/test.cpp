@@ -1,5 +1,6 @@
 #include "Auxiliar.hpp"
 #include "clasico.hpp"
+#include "karatsuba.hpp"
 #include <iostream>
 #include <string>
 
@@ -13,10 +14,10 @@ static void revisar(const std::string& caso,
                     const std::string& esperado) {
     pruebas++;
     if (obtenido == esperado) {
-        std::cout << "OK    " << caso << " = " << obtenido << "\n";
+        std::cout << "[OK]   " << caso << " = " << obtenido << "\n";
     } else {
         fallos++;
-        std::cout << "FALLO " << caso
+        std::cout << "[FAIL] " << caso
                   << " -> esperado " << esperado
                   << ", obtenido " << obtenido << "\n";
     }
@@ -27,8 +28,24 @@ static std::string multClasica(const std::string& a, const std::string& b) {
     return aString(multiplicacionClasica(aVector(a), aVector(b)));
 }
 
+// Atajo: multiplica dos numeros dados como string usando Karatsuba.
+static std::string multKaratsuba(const std::string& a, const std::string& b) {
+    return aString(karatsuba(aVector(a), aVector(b)));
+}
+
+// Atajo: valida ambos metodos simultaneamente para asegurar paridad
+static void validarAmbos(const std::string& caso, 
+                         const std::string& a, 
+                         const std::string& b, 
+                         const std::string& esperado) {
+    revisar("Clasica: " + caso, multClasica(a, b), esperado);
+    revisar("Karatsuba: " + caso, multKaratsuba(a, b), esperado);
+}
+
 int main() {
-    std::cout << "Auxiliares\n";
+    std::cout << "========================================\n";
+    std::cout << " PRUEBAS DE OPERACIONES AUXILIARES\n";
+    std::cout << "========================================\n";
 
     // Conversion ida y vuelta.
     revisar("aString(aVector(1234))", aString(aVector("1234")), "1234");
@@ -53,27 +70,44 @@ int main() {
         revisar("partir(1234,2) bajo", aString(bajo), "34");
     }
 
-    std::cout << "\n Multiplicacion clasica \n";
+    std::cout << "\n========================================\n";
+    std::cout << " PRUEBAS DE MULTIPLICACION Y CASOS BORDE\n";
+    std::cout << "========================================\n";
 
-    // Casos basicos.
-    revisar("7 * 8",       multClasica("7", "8"),       "56");
-    revisar("12 * 12",     multClasica("12", "12"),     "144");
-    revisar("123 * 456",   multClasica("123", "456"),   "56088");
-    revisar("999 * 999",   multClasica("999", "999"),   "998001");
+    // 1. Caso Base: Números de 1 dígito
+    validarAmbos("7 * 8", "7", "8", "56");
+    validarAmbos("1 * 1", "1", "1", "1");
+    validarAmbos("0 * 9", "0", "9", "0");
 
-    // Casos de borde.
-    revisar("0 * 12345",   multClasica("0", "12345"),   "0");
-    revisar("1 * 1",       multClasica("1", "1"),       "1");
+    // 2. Multiplicación estándar (diferentes tamaños)
+    validarAmbos("12 * 12", "12", "12", "144");
+    validarAmbos("123 * 456", "123", "456", "56088");
+    validarAmbos("999 * 999", "999", "999", "998001");
+    validarAmbos("25 * 100000", "25", "100000", "2500000");
 
-    // Longitudes distintas.
-    revisar("25 * 100000", multClasica("25", "100000"), "2500000");
+    // 3. Operandos con ceros a la izquierda (Requiere normalización)
+    validarAmbos("00045 * 0012", "00045", "0012", "540");
 
-    // Un caso mas grande
-    revisar("123456789 * 987654321",
-            multClasica("123456789", "987654321"),
-            "121932631112635269");
+    // 4. Factores con ceros intercalados
+    validarAmbos("10005 * 20004", "10005", "20004", "200140020");
 
-    std::cout << "\n=== Resumen ===\n";
-    std::cout << "Pruebas: " << pruebas << ", Fallos: " << fallos << "\n";
+    // 5. Longitudes impares antes del relleno (Ej. 3 digitos * 5 digitos)
+    validarAmbos("123 * 45678", "123", "45678", "5618394");
+
+    // 6. Producto grande 
+    validarAmbos("123456789 * 987654321", 
+                 "123456789", "987654321", 
+                 "121932631112635269");
+
+    std::cout << "\n========================================\n";
+    std::cout << " RESUMEN FINAL\n";
+    std::cout << "========================================\n";
+    std::cout << "Pruebas ejecutadas: " << pruebas << "\n";
+    std::cout << "Fallos detectados:  " << fallos << "\n";
+    
+    if (fallos == 0) {
+        std::cout << "\n[EXITO] Tu modulo de Karatsuba funciona a la perfeccion.\n";
+    }
+
     return (fallos == 0) ? 0 : 1;
 }
